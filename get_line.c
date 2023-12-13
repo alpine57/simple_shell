@@ -1,5 +1,6 @@
 #include "main.h"
 
+
 char *fun_getline(void) {
     static char buffer[BUFFER_SIZE];
     static int buffer_pos = 0;
@@ -30,13 +31,13 @@ char *fun_getline(void) {
         }
 
         if (line_size == 0) {
-            line = (char *)malloc(sizeof(char));
+            line = (char *)malloc(BUFFER_SIZE * sizeof(char));
             if (line == NULL) {
                 perror("Error: Memory allocation failed.\n");
                 exit(EXIT_FAILURE);
             }
-        } else {
-            char *temp = (char *)realloc(line, (line_size + 1) * sizeof(char));
+        } else if (line_size % BUFFER_SIZE == 0) {
+            char *temp = (char *)realloc(line, (line_size + BUFFER_SIZE + 1) * sizeof(char));
             if (temp == NULL) {
                 free(line);
                 perror("Error: Memory reallocation failed.\n");
@@ -54,3 +55,4 @@ char *fun_getline(void) {
 
     return line;
 }
+
