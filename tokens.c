@@ -1,36 +1,44 @@
 #include "main.h"
+char *fun_getline(void) {
+    char *line = NULL;
+    size_t buffer_size = BUFFER_SIZE;
+    size_t line_size = 0;
+    int c;
 
-void tokenize(char *input, char ***args) {
-    size_t arg_count = 0;
-    char *token = strtok(input, " \t\n");
-    char **temp;
-
-    *args = malloc(sizeof(char*) * 2);
-    if (*args == NULL) {
-        fprintf(stderr, "Memory allocation failed\n");
+    line = (char *)malloc(buffer_size * sizeof(char));
+    if (line == NULL) {
+        perror("Error: Memory allocation failed.\n");
         exit(EXIT_FAILURE);
     }
 
-    while (token) {
-        (*args)[arg_count] = strdup(token);
-        if ((*args)[arg_count] == NULL) {
-            fprintf(stderr, "Memory allocation failed\n");
-            exit(EXIT_FAILURE);
-        }
-        
-        arg_count++;
+    while (1) {
+        c = getchar();
 
-      
-        temp = realloc(*args, sizeof(char*) * (arg_count + 2));
-        if (temp == NULL) {
-            fprintf(stderr, "Memory allocation failed\n");
-            exit(EXIT_FAILURE);
+        if (c == EOF || c == '\n') {
+            break;
         }
 
-        *args = temp;
-        (*args)[arg_count] = NULL;
+        line[line_size++] = c;
 
-        token = strtok(NULL, " \t\n");
+        if (line_size >= buffer_size - 1) {
+            char *new_line;
+            buffer_size += BUFFER_SIZE;
+            new_line = realloc(line, buffer_size * sizeof(char));
+            if (new_line == NULL) {
+                perror("Error: Memory reallocation failed.\n");
+                free(line);
+                exit(EXIT_FAILURE);
+            }
+            line = new_line;
+        }
     }
+
+    if (line_size == 0 && c == EOF) {
+        free(line);
+        return NULL;
+    }
+
+    line[line_size] = '\0';
+    return line;
 }
 
