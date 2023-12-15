@@ -1,8 +1,7 @@
-#include "main.h"
-#include <unistd.h>
-
+#include"main.h"
 char *prompt_read(void) {
     char *user_input = NULL;
+   
 
     while (1) {
         if (isatty(STDIN_FILENO) && write(STDOUT_FILENO, "$ ", 2) == -1) {
@@ -10,35 +9,26 @@ char *prompt_read(void) {
             exit(EXIT_FAILURE);
         }
 
-        
-    user_input = getline();
-    if (user_input == NULL) {
-        if (isatty(STDIN_FILENO)) {
-            write(STDOUT_FILENO, "\n", 1);
-            exit(EXIT_SUCCESS);
-        } else {
-            exit(EXIT_SUCCESS);
+        user_input = fun_getline();
+
+        if (user_input == NULL) {
+            fprintf(stderr, "\n");
+            return NULL;
         }
-    }
 
-    *fd_check = s_len(user_input);
-
-    if (*fd_check == -1) {
-        if (isatty(STDIN_FILENO)) {
-            write(STDOUT_FILENO, "\n", 1);
-            free(user_input);
-            exit(EXIT_SUCCESS);
-        } else {
-            free(user_input);
-            exit(EXIT_SUCCESS);
+      
+        while (*user_input == ' ' || *user_input == '\t' || *user_input == '\n') {
+            user_input++;
         }
+
+        if (*user_input == '\0') {
+            free(user_input);
+            continue;
+        }
+
+        break;
     }
 
-    if (*fd_check == 0 && isatty(STDIN_FILENO)) {
-        free(user_input);
-        return prompt_read(fd_check);
-    }
-
-    user_input[_strcspn(user_input, "\n")] = '\0';
     return user_input;
 }
+

@@ -20,5 +20,9 @@
 
 char *prompt_read(void);
 char *fun_getline(void);
-void exit_shell(char **receive_argv, int execution_status);
+void handle_env_command(char **args);
+ void exit_shell(char **receive_argv, int execution_status);
+ void execute_command(char **args);
+ void tokenize(char *input, char ***args);
  #endif
+
