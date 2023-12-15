@@ -32,4 +32,25 @@ void handle_env_command(char **args) {
         free(env);
     }
 }
+void handle_setenv_command(char **args) {
+    if (args[1] == NULL || args[2] == NULL || args[3] != NULL) {
+        fprintf(stderr, "Usage: setenv variable value\n");
+        return;
+    }
+
+    if (setenv(args[1], args[2], 1) != 0) {
+        perror("setenv");
+    }
+}
+
+void handle_unsetenv_command(char **args) {
+    if (args[1] == NULL || args[2] != NULL) {
+        fprintf(stderr, "Usage: unsetenv variable\n");
+        return;
+    }
+
+    if (unsetenv(args[1]) != 0) {
+        perror("unsetenv");
+    }
+}
 

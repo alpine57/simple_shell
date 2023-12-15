@@ -42,4 +42,28 @@ char *get_path(char *first_command) {
 
     return NULL;
 }
+int cd_dir(char *path) {
+    char *new_directory;
+    int result;
+
+    if (path == NULL || strcmp(path, "-") == 0) {
+        new_directory = getenv("HOME");
+        if (new_directory == NULL) {
+            fprintf(stderr, "Error: HOME environment variable not set.\n");
+            return -1;
+        }
+    } else {
+        new_directory = path;
+    }
+
+    result = chdir(new_directory);
+    if (result == -1) {
+        perror("chdir");
+        return -1;
+    }
+
+    setenv("PWD", new_directory, 1);
+
+    return 0;
+}
 

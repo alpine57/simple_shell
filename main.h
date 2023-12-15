@@ -24,5 +24,8 @@ void handle_env_command(char **args);
  void exit_shell(char **receive_argv, int execution_status);
  void execute_command(char **args);
  void tokenize(char *input, char ***args);
+ void handle_setenv_command(char **args);
+void handle_unsetenv_command(char **args);
+int cd_dir(char *path);
  #endif
 
