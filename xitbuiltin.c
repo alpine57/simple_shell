@@ -5,7 +5,7 @@ void exit_shell(char **receive_argv, int execution_status) {
         char *endptr;
         long arg = strtol(arg_str, &endptr, 10);
 
-        if (endptr != arg_str && *endptr == '\0') {
+        if (*endptr == '\0' && endptr != arg_str) {
             if (arg >= 0) {
                 free(receive_argv);
                 exit((int)arg);
