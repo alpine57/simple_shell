@@ -2,7 +2,7 @@
 
 int main(int ac, char **argv) {
     char *user_input;
-    char **receive_argv;
+    char **receive_argv = NULL;
 
     (void)ac;
     (void)argv;
@@ -17,14 +17,16 @@ int main(int ac, char **argv) {
 
         tokenize(user_input, &receive_argv);
 
+ 
+        free(user_input);
+
         if (receive_argv == NULL || receive_argv[0] == NULL) {
-            free(user_input);
+           
             free(receive_argv);
             continue;
         }
 
         if (strcmp(receive_argv[0], "exit") == 0) {
-            free(user_input);
             free(receive_argv);
             exit_shell(NULL, 0);
         } else if (strcmp(receive_argv[0], "env") == 0) {
@@ -33,9 +35,10 @@ int main(int ac, char **argv) {
             execute_command(receive_argv);
         }
 
-        free(user_input);
+       
         free(receive_argv);
     }
 
     return 0;
 }
+
