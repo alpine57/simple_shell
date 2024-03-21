@@ -1,4 +1,5 @@
 #include "main.h"
+
 char *prompt_read(void) {
     char *user_input = NULL;
 
